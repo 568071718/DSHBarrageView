@@ -68,9 +68,10 @@
     [cell addTarget:self action:@selector(clickActions:) forControlEvents:UIControlEventTouchUpInside];
     cell.frame = ({
         CGRect frame = cell.frame;
+        frame.size.width = [cell setupSubviews];
         frame.origin.x = self.frame.size.width;
         frame.origin.y = _channels[idleIndex].floatValue;
-        frame.size.width = [cell setupSubviews];
+        frame.size.height = _channelHeight;
         frame;
     });
     [self addSubview:cell];
