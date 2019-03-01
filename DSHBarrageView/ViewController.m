@@ -67,7 +67,7 @@
     if (indexPath.row == 0) {
         cell.textLabel.text = @"基础用法";
     } else if (indexPath.row == 1) {
-        cell.textLabel.text = @"实际应用";
+        cell.textLabel.text = @"模拟应用";
     }
     return cell;
 }

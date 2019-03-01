@@ -22,6 +22,7 @@
 		8909AF9021F3AF600001D13C /* DemoBarrageViewCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = 8909AF8F21F3AF600001D13C /* DemoBarrageViewCell2.m */; };
 		8909AF9321F3AF910001D13C /* Example1Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 8909AF9221F3AF910001D13C /* Example1Controller.m */; };
 		8909AF9621F3AFA40001D13C /* Example2Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 8909AF9521F3AFA40001D13C /* Example2Controller.m */; };
+		891571AC2227AE8900F7E52E /* DSHBarrageChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 891571AB2227AE8900F7E52E /* DSHBarrageChannel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,8 @@
 		8909AF9221F3AF910001D13C /* Example1Controller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Example1Controller.m; sourceTree = "<group>"; };
 		8909AF9421F3AFA40001D13C /* Example2Controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Example2Controller.h; sourceTree = "<group>"; };
 		8909AF9521F3AFA40001D13C /* Example2Controller.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Example2Controller.m; sourceTree = "<group>"; };
+		891571AA2227AE8900F7E52E /* DSHBarrageChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSHBarrageChannel.h; sourceTree = "<group>"; };
+		891571AB2227AE8900F7E52E /* DSHBarrageChannel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DSHBarrageChannel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +168,8 @@
 				8909AF8521F0BB020001D13C /* DSHBarrageViewCell.m */,
 				8909AF8B21F0E2640001D13C /* DSHBarrageMessage.h */,
 				8909AF8C21F0E2640001D13C /* DSHBarrageMessage.m */,
+				891571AA2227AE8900F7E52E /* DSHBarrageChannel.h */,
+				891571AB2227AE8900F7E52E /* DSHBarrageChannel.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -328,6 +333,7 @@
 				8909AF8A21F0D5AE0001D13C /* DemoBarrageViewCell1.m in Sources */,
 				8909AF8621F0BB020001D13C /* DSHBarrageViewCell.m in Sources */,
 				8909AF5E21F0BACE0001D13C /* main.m in Sources */,
+				891571AC2227AE8900F7E52E /* DSHBarrageChannel.m in Sources */,
 				8909AF8D21F0E2640001D13C /* DSHBarrageMessage.m in Sources */,
 				8909AF5021F0BACB0001D13C /* AppDelegate.m in Sources */,
 				8909AF9021F3AF600001D13C /* DemoBarrageViewCell2.m in Sources */,

@@ -24,7 +24,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     _barrageView = [[DSHBarrageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _barrageView.topPadding = [UIApplication sharedApplication].statusBarFrame.size.height + 44.f + 20.f;
+    _barrageView.topSpacing = [UIApplication sharedApplication].statusBarFrame.size.height + 44.f + 20.f;
     _barrageView.cellClass = [DemoBarrageViewCell1 class];
     [self.view addSubview:_barrageView];
 }

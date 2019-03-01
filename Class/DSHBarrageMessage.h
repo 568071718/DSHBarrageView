@@ -12,9 +12,9 @@
 
 - (id)init;
 
-// 设置弹幕滚动速度,当设置0或者小于0时为随机速度(0.5 - 1.5)
+/// 设置弹幕滚动速度,当设置0或者小于0时为随机速度(0.5 - 1.5)
 @property (assign ,nonatomic) CGFloat speed;
 
-// 记录弹幕数据
+/// 记录弹幕数据
 @property (strong ,nonatomic) id body;
 @end

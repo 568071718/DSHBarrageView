@@ -7,12 +7,13 @@
 //
 
 #import "DSHBarrageView.h"
+#import "DSHBarrageChannel.h"
 
 @interface DSHBarrageView ()
 
 @property (strong ,nonatomic) CADisplayLink *timer;
-@property (strong ,nonatomic) NSArray <NSNumber *>*channels;
-@property (strong ,nonatomic) NSMutableArray *barrageMessages;
+@property (strong ,nonatomic) NSArray <DSHBarrageChannel *>*channels; // 当前所有通道
+@property (strong ,nonatomic) NSMutableArray <DSHBarrageMessage *>*barrageMessages; // 队列内的消息
 @end
 
 @implementation DSHBarrageView
@@ -39,7 +40,7 @@
 - (void)setup {
     self.backgroundColor = nil;
     self.clipsToBounds = YES;
-    _topPadding = [UIApplication sharedApplication].statusBarFrame.size.height + 20.f;
+    _topSpacing = [UIApplication sharedApplication].statusBarFrame.size.height + 20.f;
     _channelCount = 4;
     _channelHeight = 44.f;
     _interitemSpacing = 5.f;
@@ -63,6 +64,7 @@
     if (!_cellClass) {
         _cellClass = [DSHBarrageViewCell class];
     }
+    DSHBarrageChannel *channel = _channels[idleIndex]; // 获取通道
     DSHBarrageViewCell *cell = [[_cellClass alloc] initWithFrame:CGRectMake(0, 0, 0, _channelHeight)];
     [cell setValue:barrageMessage forKey:@"message"];
     [cell addTarget:self action:@selector(clickActions:) forControlEvents:UIControlEventTouchUpInside];
@@ -70,11 +72,16 @@
         CGRect frame = cell.frame;
         frame.size.width = [cell setupSubviews];
         frame.origin.x = self.frame.size.width;
-        frame.origin.y = _channels[idleIndex].floatValue;
+        frame.origin.y = channel.y;
         frame.size.height = _channelHeight;
         frame;
     });
+    if ([_delegate respondsToSelector:@selector(barrageView:willDisplayBarrageCell:)]) {
+        [_delegate barrageView:self willDisplayBarrageCell:cell];
+    }
     [self addSubview:cell];
+    [channel.cells addObject:cell];
+    channel.lastCell = cell;
     if (!_timer) {
         _timer = [CADisplayLink displayLinkWithTarget:self selector:@selector(update)];
         [_timer addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
@@ -83,28 +90,15 @@
 
 // 返回一个可用的通道，没有可用通道返回 -1
 - (NSInteger)idleIndex {
-    NSMutableArray <NSNumber *>*x = [NSMutableArray arrayWithCapacity:_channels.count];
-    for (int i = 0; i < _channels.count; i ++) {
-        x[i] = @(0);
-    }
-    for (DSHBarrageViewCell *subview in self.subviews) {
-        if ([subview isKindOfClass:[DSHBarrageViewCell class]]) {
-            for (int i = 0; i < _channels.count; i ++) {
-                CGFloat y = _channels[i].floatValue;
-                if (subview.frame.origin.y == y) {
-                    x[i] = @(MAX(x[i].floatValue, CGRectGetMaxX(subview.frame)));
-                }
-            }
+    for (DSHBarrageChannel *channel in _channels) {
+        if (!channel.lastCell) {
+            return channel.channelIndex;
+        }
+        if (CGRectGetMaxX(channel.lastCell.frame) < self.frame.size.width - _interitemSpacing) {
+            return channel.channelIndex;
         }
     }
-    NSInteger result = -1;
-    for (int i = 0; i < x.count; i ++) {
-        CGFloat _x = x[i].floatValue;
-        if (_x < self.frame.size.width - _interitemSpacing) {
-            return i;
-        }
-    }
-    return result;
+    return -1;
 }
 
 - (void)update {
@@ -153,17 +147,20 @@
 
 #pragma mark -
 - (void)reloadConfig {
-    CGFloat y = _topPadding;
+    CGFloat y = _topSpacing;
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:_channelCount];
     for (int i = 0; i < _channelCount; i ++) {
-        array[i] = @(y);
+        DSHBarrageChannel *channel = [[DSHBarrageChannel alloc] init];
+        [channel setValue:@(i) forKey:@"channelIndex"];
+        [channel setValue:@(y) forKey:@"y"];
+        array[i] = channel;
         y = y + _channelHeight + _lineSpacing;
     }
     _channels = [array copy];
 }
 
-- (void)setTopPadding:(CGFloat)topPadding {
-    _topPadding = topPadding;
+- (void)setTopSpacing:(CGFloat)topSpacing {
+    _topSpacing = topSpacing;
     [self reloadConfig];
 }
 

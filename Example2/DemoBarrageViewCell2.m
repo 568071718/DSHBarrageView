@@ -11,9 +11,17 @@
 @implementation DemoBarrageViewCell2
 
 - (CGFloat)setupSubviews {
-    
     NSDictionary *body = self.message.body;
-    
+    NSInteger type = [body[@"type"] integerValue];
+    if (type == 1) {
+        return [self makeType1Cell:body];
+    } else {
+        return [self makeType2Cell:body];
+    }
+}
+
+// 特殊弹幕样式
+- (CGFloat)makeType1Cell:(NSDictionary *)body; {
     UIImageView *head = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     head.layer.cornerRadius = 30 * .5;
     head.clipsToBounds = YES;
@@ -52,16 +60,33 @@
     return MAX(CGRectGetMaxX(label1.frame), CGRectGetMaxX(label2.frame));
 }
 
+// 普通弹幕样式
+- (CGFloat)makeType2Cell:(NSDictionary *)body; {
+    UILabel *label = [[UILabel alloc] init];
+    label.textColor = [UIColor blackColor];
+    label.font = [UIFont systemFontOfSize:10];
+    label.text = body[@"content"];;
+    label.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:label];
+    
+    label.frame = ({
+        [label sizeToFit];
+        CGRect frame = label.frame;
+        frame.origin.y = 0.f;
+        frame.origin.x = 0;
+        frame.size.height = self.frame.size.height;
+        frame;
+    });
+    return label.frame.size.width ;
+}
+
 - (void)setImageWithImagePath:(NSString *)urlString forImageView:(UIImageView *)imageView; {
-    NSURLSession *session = [NSURLSession sharedSession];
-    [[session downloadTaskWithURL:[NSURL URLWithString:urlString] completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (!error) {
-            UIImage *image = [UIImage imageWithContentsOfFile:location.path];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                imageView.image = image;
-            });
-        }
-    }] resume];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageView.image = image;
+        });
+    });
 }
 
 @end

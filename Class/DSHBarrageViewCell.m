@@ -13,13 +13,7 @@
 
 @implementation DSHBarrageViewCell
 
-- (id)initWithFrame:(CGRect)frame; {
-    self = [super initWithFrame:frame];
-    if (self) {
-    } return self;
-}
-
-// 重写生成自定义子视图，需要在这个方法里计算自身宽度并返回
+// 子类重写，返回自身计算后的宽度
 - (CGFloat)setupSubviews; {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150.f + arc4random() % 200, self.frame.size.height)];
     view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:.5];

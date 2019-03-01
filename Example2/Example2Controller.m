@@ -24,11 +24,11 @@
     self.navigationItem.title = @"模拟应用";
     
     _barrageView = [[DSHBarrageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _barrageView.topPadding = [UIApplication sharedApplication].statusBarFrame.size.height + 44.f + 20.f;
+    _barrageView.topSpacing = [UIApplication sharedApplication].statusBarFrame.size.height + 44.f + 20.f;
     _barrageView.cellClass = [DemoBarrageViewCell2 class];
     _barrageView.channelHeight = 30.f;
     _barrageView.lineSpacing = 20.f;
-    _barrageView.channelCount = 5;
+    _barrageView.channelCount = 10;
     _barrageView.delegate = self;
     [self.view addSubview:_barrageView];
 }
@@ -63,10 +63,12 @@
 
 #pragma mark -
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    DSHBarrageMessage *message = [[DSHBarrageMessage alloc] init];
-    message.body = [self randomMessage];
-    message.speed = 0;
-    [_barrageView receivedMessage:message];
+    for (int i = 0; i < 10; i ++) {
+        DSHBarrageMessage *message = [[DSHBarrageMessage alloc] init];
+        message.body = [self randomMessage];
+        message.speed = 0;
+        [_barrageView receivedMessage:message];
+    }
 }
 
 // 代理
@@ -85,7 +87,8 @@
              @"content":[self randomContent],
              @"nickname":[self randomName],
              @"head":[self randomHead],
-             @"id":@(index),};
+             @"id":@(index),
+             @"type":@(arc4random() % 3)};
 }
 - (UIColor *)randomColor {
     return [UIColor colorWithRed:arc4random() % 255 / 255.f
